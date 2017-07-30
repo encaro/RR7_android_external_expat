@@ -64,14 +64,24 @@ _copy_to() {
 
 _copy_missing_mingw_libaries() {
     # These extra files are copied because
-    # * coverage GCC fflags make them needed
-    # * With WINEDLLPATH Wine look for .dll.so in these folders, not .dll
+    # * coverage GCC flags make them needed
+    # * With WINEDLLPATH Wine looks for .dll.so in these folders, not .dll
     local target="$1"
-    local mingw_dll_dir="$(dirname "$(ls -1 /usr/lib*/gcc/i686-w64-mingw32/*/libgcc_s_sjlj-1.dll | head -n1)")"
+    local mingw_gcc_dll_dir="$(dirname "$(ls -1 /usr/lib*/gcc/i686-w64-mingw32/*/libgcc_s_sjlj-1.dll | head -n1)")"
     for dll in libgcc_s_sjlj-1.dll libstdc++-6.dll; do
         (
             set -x
-            ln -s "${mingw_dll_dir}"/${dll} "${target}"/${dll}
+            ln -s "${mingw_gcc_dll_dir}"/${dll} "${target}"/${dll}
+        )
+    done
+
+    local mingw_pthread_dll_dir="$(dirname "$(ls -1 /usr/i686-w64-mingw32/lib*/libwinpthread-1.dll | head -n1)")"
+    for dll in libwinpthread-1.dll; do
+        source="${mingw_pthread_dll_dir}"/${dll}
+        [[ -e "${source}" ]] || continue
+        (
+            set -x
+            ln -s "${source}" "${target}"/${dll}
         )
     done
 }
@@ -85,7 +95,7 @@ _run() {
     local BASE_FLAGS='-pipe -Wall -Wextra -pedantic -Wno-overlength-strings'
     BASE_FLAGS+=' --coverage --no-inline'
 
-    local CFLAGS="-std=c89 ${BASE_FLAGS}"
+    local CFLAGS="-std=c99 ${BASE_FLAGS}"
     local CXXFLAGS="-std=c++98 ${BASE_FLAGS}"
 
     (

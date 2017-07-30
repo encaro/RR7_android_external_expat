@@ -13,7 +13,8 @@ common_CFLAGS := \
     -Wmissing-prototypes -Wstrict-prototypes \
     -Wno-unused-parameter -Wno-missing-field-initializers \
     -fexceptions \
-    -DHAVE_EXPAT_CONFIG_H
+    -DHAVE_EXPAT_CONFIG_H \
+    -DXML_POOR_ENTROPY
 
 common_C_INCLUDES += \
 	$(LOCAL_PATH)/lib
