@@ -1,4 +1,5 @@
-/*
+/* Interface to allocation functions that will track what has or has
+   not been freed.
                             __  __            _
                          ___\ \/ /_ __   __ _| |_
                         / _ \\  /| '_ \ / _` | __|
@@ -30,76 +31,27 @@
    USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifdef HAVE_EXPAT_CONFIG_H
-# include <expat_config.h>
+#ifdef __cplusplus
+extern "C" {
 #endif
-#include "minicheck.h"
 
-#include <assert.h>
-#include <stdio.h>
-#include <string.h>
+#ifndef XML_MEMCHECK_H
+#define XML_MEMCHECK_H 1
 
-#include "chardata.h"
+/* Allocation declarations */
 
+void *tracking_malloc(size_t size);
+void tracking_free(void *ptr);
+void *tracking_realloc(void *ptr, size_t size);
 
-static int
-xmlstrlen(const XML_Char *s)
-{
-    int len = 0;
-    assert(s != NULL);
-    while (s[len] != 0)
-        ++len;
-    return len;
+/* End-of-test check to see if unfreed allocations remain. Returns
+ * TRUE (1) if there is nothing, otherwise prints a report of the
+ * remaining allocations and returns FALSE (0).
+ */
+int tracking_report(void);
+
+#endif /* XML_MEMCHECK_H */
+
+#ifdef __cplusplus
 }
-
-
-void
-CharData_Init(CharData *storage)
-{
-    assert(storage != NULL);
-    storage->count = -1;
-}
-
-void
-CharData_AppendXMLChars(CharData *storage, const XML_Char *s, int len)
-{
-    int maxchars;
-
-    assert(storage != NULL);
-    assert(s != NULL);
-    maxchars = sizeof(storage->data) / sizeof(storage->data[0]);
-    if (storage->count < 0)
-        storage->count = 0;
-    if (len < 0)
-        len = xmlstrlen(s);
-    if ((len + storage->count) > maxchars) {
-        len = (maxchars - storage->count);
-    }
-    if (len + storage->count < (int)sizeof(storage->data)) {
-        memcpy(storage->data + storage->count, s,
-               len * sizeof(storage->data[0]));
-        storage->count += len;
-    }
-}
-
-int
-CharData_CheckXMLChars(CharData *storage, const XML_Char *expected)
-{
-    char buffer[1024];
-    int len = xmlstrlen(expected);
-    int count;
-
-    assert(storage != NULL);
-    count = (storage->count < 0) ? 0 : storage->count;
-    if (len != count) {
-        sprintf(buffer, "wrong number of data characters: got %d, expected %d",
-                count, len);
-        fail(buffer);
-        return 0;
-    }
-    if (memcmp(expected, storage->data, len * sizeof(storage->data[0])) != 0) {
-        fail("got bad data bytes");
-        return 0;
-    }
-    return 1;
-}
+#endif

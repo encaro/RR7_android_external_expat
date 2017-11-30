@@ -18,35 +18,50 @@ echo "Removing unnecessary files"
 rm CMake.README
 rm CMakeLists.txt
 rm ConfigureChecks.cmake
-rm MANIFEST
+rm Makefile.am
 rm Makefile.in
 rm aclocal.m4
 rm configure
 rm configure.ac
-rm examples/elements.dsp
-rm examples/outline.dsp
-rm expat.dsw
+rm run.sh.in
+rm test-driver-wrapper.sh
+rm doc/Makefile.am
+rm doc/Makefile.in
 rm expat.pc.in
+rm expat.sln
 rm expat_config.h.cmake
 rm expat_config.h.in
-rm lib/Makefile.MPW
-rm lib/amigaconfig.h
-rm lib/expat.dsp
-rm lib/expat_static.dsp
-rm lib/expatw.dsp
-rm lib/expatw_static.dsp
+rm examples/Makefile.am
+rm examples/Makefile.in
+rm examples/elements.vcxproj
+rm examples/elements.vcxproj.filters
+rm examples/outline.vcxproj
+rm examples/outline.vcxproj.filters
+rm lib/Makefile.am
+rm lib/Makefile.in
+rm lib/expat.vcxproj
+rm lib/expat.vcxproj.filters
+rm lib/expat_static.vcxproj
+rm lib/expat_static.vcxproj.filters
+rm lib/expatw.vcxproj
+rm lib/expatw.vcxproj.filters
+rm lib/expatw_static.vcxproj
+rm lib/expatw_static.vcxproj.filters
 rm lib/libexpat.def
 rm lib/libexpatw.def
-rm lib/macconfig.h
 rm lib/winconfig.h
-rm tests/benchmark/benchmark.dsp
-rm tests/benchmark/benchmark.dsw
+rm tests/Makefile.am
+rm tests/Makefile.in
+rm tests/benchmark/Makefile.am
+rm tests/benchmark/Makefile.in
+rm tests/benchmark/benchmark.sln
+rm tests/benchmark/benchmark.vcxproj
+rm tests/runtests.sln
+rm tests/runtests.vcxproj
+rm tests/runtests.vcxproj.filters
 
-rm -rf amiga
-rm -rf bcb5
 rm -rf conftools
 rm -rf m4
-rm -rf vms
 rm -rf win32
 rm -rf xmlwf
 
